@@ -6,20 +6,17 @@ import RecipeSection from "./recipe-section";
 
 function FoodDisplayer(props: IFoodDisplayerProps) {
   const [state, setState] = useState<IFoodDisplayerState>({ recipe: null });
+
   const fetchRecipe = async (): Promise<void> => {
     try {
-      const recipeData: IRecipeData = await (
-        await fetch(
-          "https://api.spoonacular.com/recipes/random?apiKey="
-        )
-      ).json();
-      const recipe: IRecipe = recipeData.recipes[0];
+      const recipe: IRecipe = await (await fetch("/api/random")).json();
       setState({ recipe });
-      console.log(recipeData);
+      console.log(recipe);
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <div>
       <div className="drawer lg:drawer-open bg-blue-300">
@@ -43,7 +40,6 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
           ></label>
           <div className="menu p-4 w-80 min-h-full bg-gray-700 text-white">
             <FormSection fetchRecipe={fetchRecipe} />
-            {/* <RecipeButton fetchRecipe={fetchRecipe} /> */}
           </div>
         </div>
       </div>
