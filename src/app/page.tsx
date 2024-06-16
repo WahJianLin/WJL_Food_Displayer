@@ -1,11 +1,11 @@
-import Image from "next/image";
 import FoodDisplayer from "./components/food-displayer";
+import FoodDisplayerContainer from "./components/food-displayer-container";
 
 export default async function Home() {
   return (
     <div>
       <div>
-        <FoodDisplayer></FoodDisplayer>
+        <FoodDisplayer />
       </div>
       <div></div>
     </div>
