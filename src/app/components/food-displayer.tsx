@@ -5,15 +5,22 @@ import FormSection from "./form-section";
 import RecipeSection from "./recipe-section";
 
 function FoodDisplayer(props: IFoodDisplayerProps) {
-  const [state, setState] = useState<IFoodDisplayerState>({ recipe: null });
+  const [state, setState] = useState<IFoodDisplayerState>({
+    recipe: null,
+    foundRecipe: false,
+  });
 
   const fetchRecipe = async (): Promise<void> => {
     try {
       const recipe: IRecipe = await (await fetch("/api/random")).json();
-      setState({ recipe });
+      setState({ recipe, foundRecipe: true });
       console.log(recipe);
     } catch (err) {
       console.log(err);
+      setState((prevState) => ({
+        ...prevState,
+        foundRecipe: false,
+      }));
     }
   };
 
@@ -50,6 +57,7 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
 interface IFoodDisplayerProps {}
 interface IFoodDisplayerState {
   readonly recipe: IRecipe | null;
+  readonly foundRecipe: boolean;
 }
 
 export default FoodDisplayer;

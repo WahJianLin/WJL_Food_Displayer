@@ -5,9 +5,14 @@ export async function GET() {
   const fetchRecipe = async (): Promise<IRecipe | null> => {
     try {
       const recipeData: IRecipeData = await (
-        await fetch(
-          "https://api.spoonacular.com/recipes/random?apiKey="
-        )
+        await fetch("https://api.spoonacular.com/recipes/random?number=1", {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            method: "GET",
+            "x-api-key": "",
+          },
+        })
       ).json();
       const recipe: IRecipe = recipeData?.recipes[0];
       return recipe;
