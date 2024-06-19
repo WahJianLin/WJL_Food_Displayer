@@ -1,13 +1,14 @@
 export enum ANIMAL_PRODUCT_USAGE {
-  STANDARD,
-  VEGITARIAN,
-  VEGAN
+  STANDARD = "standard",
+  VEGETARIAN = "vegetarian",
+  VEGAN = "vegan",
 }
 
 export enum MEAL_TIME {
-  BREAKFAST,
-  LUNCH,
-  DINNER,
-  SNACK,
-  DESSERT
+  ALL = "all",
+  BREAKFAST = "breakfast",
+  LUNCH = "lunch",
+  DINNER = "dinner",
+  SNACK = "snack",
+  DESSERT = "dessert",
 }
