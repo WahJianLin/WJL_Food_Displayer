@@ -15,7 +15,7 @@ function RecipeSection(props: Props) {
       ? ingredient.original
       : `${usMeaure} (${metricMeasure}) ${ingredient.originalName}`;
   };
-  const sanatizedRecipe = DOMPurify.sanitize(props.recipe.summary); // remove links later
+  const sanatizedRecipe = DOMPurify.sanitize(props.recipe.summary);
 
   return (
     <div>
@@ -33,7 +33,7 @@ function RecipeSection(props: Props) {
       <br></br>
       <ul>
         {props.recipe.analyzedInstructions[0].steps.map((step, index) => (
-          <li>{`Step ${index}: ${step.step}`}</li>
+          <li>{`Step ${index + 1}: ${step.step}`}</li>
         ))}
       </ul>
       <br></br>

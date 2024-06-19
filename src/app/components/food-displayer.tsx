@@ -1,10 +1,16 @@
 "use client";
 import React, { useState } from "react";
-import { IRecipe, IRecipeData } from "../supplimentary/recipe-interfaces";
+import { IRecipe } from "../supplimentary/recipe-interfaces";
 import FormSection from "./form-section";
 import RecipeSection from "./recipe-section";
 import { IFormDetails } from "../supplimentary/form-interfaces";
-import { ANIMAL_PRODUCT_USAGE, MEAL_TIME } from "../supplimentary/constants";
+import {
+  ANIMAL_PRODUCT_USAGE_VALUE,
+  OPEN_FORM_LABEL,
+  MEAL_TIME_VALUE,
+  GLUTEN_FREE_VALUE,
+  DAIRY_FREE_VALUE,
+} from "../supplimentary/constants";
 
 function FoodDisplayer(props: IFoodDisplayerProps) {
   const [state, setState] = useState<IFoodDisplayerState>({
@@ -14,37 +20,59 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
 
   const fetchRecipe = async (formDetails: IFormDetails): Promise<void> => {
     try {
-      //&includeTags=
-      const includeTags = `${
-        formDetails.animalProductUsage !== ANIMAL_PRODUCT_USAGE.STANDARD
-          ? `${formDetails.animalProductUsage},`
-          : ""
-      }${formDetails.glutenFree ? "gluten free," : ""}${
-        formDetails.dairyFree ? "dairy free," : ""
-      }${
-        formDetails.mealTime === MEAL_TIME.ALL ? `${formDetails.mealTime},` : ""
-      }${formDetails.foodType !== "" ? `${formDetails.foodType},` : ""}${
-        formDetails.includeFoods
-      }`;
+      const includeTagsArray: string[] = [];
+      const excludeTagsArray: string[] = [];
+      if (
+        formDetails.animalProductUsage !== ANIMAL_PRODUCT_USAGE_VALUE.STANDARD
+      ) {
+        includeTagsArray.push(formDetails.animalProductUsage);
+      }
+      if (formDetails.glutenFree) {
+        includeTagsArray.push(GLUTEN_FREE_VALUE);
+      }
+      if (formDetails.dairyFree) {
+        includeTagsArray.push(DAIRY_FREE_VALUE);
+      }
+      if (formDetails.mealTime !== MEAL_TIME_VALUE.ALL) {
+        includeTagsArray.push(formDetails.mealTime);
+      }
+      if (formDetails.foodType !== "") {
+        includeTagsArray.push(formDetails.foodType);
+      }
+      if (formDetails.includeFoods !== "") {
+        includeTagsArray.push(formDetails.includeFoods);
+      }
 
-      //&excludeTags=
-      const excludeTags = `${formDetails.excludeFoods}`;
-      console.log(includeTags);
+      if (formDetails.excludeFoods !== "") {
+        excludeTagsArray.push(formDetails.excludeFoods);
+      }
+
+      const includeTags: string = includeTagsArray.join();
+      const excludeTags: string = excludeTagsArray.join();
+      const searchParams: string = `${
+        includeTags != "" ? `&include-tags=${includeTags}` : ""
+      }${excludeTags != "" ? `&exclude-tags=${excludeTags}` : ""}`;
+
       const recipe: IRecipe = await (
-        await fetch(
-          `/api/random?${
-            includeTags != "" ? `&include-tags=${includeTags}` : ""
-          }${excludeTags != "" ? `&exclude-tags=${excludeTags}` : ""}`
-        )
+        await fetch(`/api/random?${searchParams}`)
       ).json();
+      console.log("success", recipe);
       setState({ recipe, foundRecipe: true });
     } catch (err) {
       console.log(err);
+
+      console.log("failure", err);
       setState((prevState) => ({
         ...prevState,
         foundRecipe: false,
       }));
     }
+  };
+
+  const getRecipeSection = () => {
+    return state.recipe !== null ? (
+      <RecipeSection recipe={state.recipe} />
+    ) : null
   };
   return (
     <div>
@@ -58,7 +86,7 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
             htmlFor="my-drawer-2"
             className="btn btn-primary drawer-button lg:hidden"
           >
-            Open drawer
+            {OPEN_FORM_LABEL}
           </label>
         </div>
         <div className="drawer-side">
