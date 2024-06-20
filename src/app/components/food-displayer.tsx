@@ -49,7 +49,7 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
 
       const includeTags: string = includeTagsArray.join();
       const excludeTags: string = excludeTagsArray.join();
-      const searchParams: string = `${
+      const searchParams: string = `number=1${
         includeTags != "" ? `&include-tags=${includeTags}` : ""
       }${excludeTags != "" ? `&exclude-tags=${excludeTags}` : ""}`;
 
@@ -72,7 +72,7 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
   const getRecipeSection = () => {
     return state.recipe !== null ? (
       <RecipeSection recipe={state.recipe} />
-    ) : null
+    ) : null;
   };
   return (
     <div>
@@ -95,7 +95,7 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="menu p-4 w-80 min-h-full bg-gray-700 text-white">
+          <div className="menu p-4 w-80 min-h-full bg-gray-700 text-gray-300">
             <FormSection fetchRecipe={fetchRecipe} />
           </div>
         </div>
