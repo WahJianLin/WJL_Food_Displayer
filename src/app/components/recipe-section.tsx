@@ -27,13 +27,13 @@ function RecipeSection(props: Props) {
       <br></br>
       <ul>
         {props.recipe.extendedIngredients.map((ingredient) => (
-          <li>{displayIngerdient(ingredient)}</li>
+          <li key={ingredient.id}>{displayIngerdient(ingredient)}</li>
         ))}
       </ul>
       <br></br>
       <ul>
         {props.recipe.analyzedInstructions[0].steps.map((step, index) => (
-          <li>{`Step ${index + 1}: ${step.step}`}</li>
+          <li key={index}>{`Step ${index + 1}: ${step.step}`}</li>
         ))}
       </ul>
       <br></br>

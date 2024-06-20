@@ -6,6 +6,7 @@ export async function GET(req: Request) {
     const endpoint: URL = new URL(req.url.toLocaleLowerCase());
     const apiKey: string = process.env.SPOONACULAR_API_KEY as string;
 
+    try {
       const recipeData: IRecipeData = await (
         await fetch(
           `https://api.spoonacular.com/recipes/random?number=1${endpoint.searchParams.toString()}`,
