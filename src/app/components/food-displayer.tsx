@@ -60,8 +60,6 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
       setState({ recipe, foundRecipe: true });
     } catch (err) {
       console.log(err);
-
-      console.log("failure", err);
       setState((prevState) => ({
         ...prevState,
         foundRecipe: false,
@@ -76,7 +74,7 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
   };
   return (
     <div>
-      <div className="drawer lg:drawer-open bg-blue-300">
+      <div className="drawer lg:drawer-open bg-zinc-200">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-center justify-center">
           {state.recipe !== null ? (

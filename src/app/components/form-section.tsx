@@ -19,8 +19,38 @@ import {
   OVERLAP_MESSAGE,
 } from "../supplimentary/constants";
 import { IFormDetails } from "../supplimentary/form-interfaces";
+import Dropdown from "./form/dropdown";
+import Checkbox from "./form/checkbox";
+import TextInput from "./form/text-input";
+import TextArea from "./form/text-area";
 
 function FormSection(props: IFormSectionProps) {
+  const [state, setState] = useState<IFormSectionState>({
+    checkboxes:{
+      glutenFreeState: false,
+      dairyFreeState: false,
+    },
+    dropdowns:{
+      animalProductUsageState: ANIMAL_PRODUCT_USAGE_VALUE.STANDARD,
+      mealTimeState: MEAL_TIME_VALUE.ALL,
+    },
+    textInputs:{
+      foodTypeState: "",
+      excludeFoodsState: "",
+      includeFoodsState: "",
+    }
+  });
+
+  const handleCheckboxClick = (id: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      checkboxes: {
+        ...prevState.checkboxes,
+        [id]: !prevState.checkboxes[id], // Toggle the state of the clicked checkbox
+      },
+    }));
+  };
+
   const [animalProductUsageState, setAnimalProductUsageState] =
     useState<ANIMAL_PRODUCT_USAGE_VALUE>(ANIMAL_PRODUCT_USAGE_VALUE.STANDARD);
   const [glutenFreeState, setGlutenFreeState] = useState<boolean>(false);
@@ -41,6 +71,9 @@ function FormSection(props: IFormSectionProps) {
       return false;
     }
     return includeList.some((target: string) => excludeList.includes(target));
+  };
+  const onDropdownChange = (value: ANIMAL_PRODUCT_USAGE_VALUE) => {
+    setAnimalProductUsageState(value);
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,6 +128,8 @@ function FormSection(props: IFormSectionProps) {
               {ANIMAL_PRODUCT_USAGE_NAME.VEGAN}
             </option>
           </select>
+          <Checkbox name={GLUTEN_FREE_LABEL} checked={glutenFreeState} onChange={handleCheckboxClick}/>
+          <Checkbox name={DAIRY_FREE_LABEL} checked={dairyFreeState} onChange={handleCheckboxClick}/>
           <div>
             <label className="label cursor-pointer">
               <span className="label-text">{GLUTEN_FREE_LABEL}</span>
@@ -133,6 +168,7 @@ function FormSection(props: IFormSectionProps) {
             <option>{MEAL_TIME_NAME.SNACK}</option>
             <option>{MEAL_TIME_NAME.DESSERT}</option>
           </select>
+          {/* <TextInput label={FOOD_TYPE_LABEL} placeholder="Pasta, Sandwich, etc." /> */}
           <label className="w-full max-w-xs pb-4">
             <div className="label">
               <span className="label-text">{FOOD_TYPE_LABEL}</span>
@@ -147,6 +183,7 @@ function FormSection(props: IFormSectionProps) {
               onChange={(event) => setFoodTypeState(event.target.value)}
             />
           </label>
+          <TextArea label={INCLUDE_FOODS_LABEL} placeholder="Include Foods" />
           <label className="pb-4">
             <div className="label">
               <span className="label-text">{INCLUDE_FOODS_LABEL}</span>
@@ -178,6 +215,12 @@ function FormSection(props: IFormSectionProps) {
 
 interface IFormSectionProps {
   fetchRecipe: (formDetails: IFormDetails) => Promise<void>;
+}
+
+interface IFormSectionState {
+  readonly checkboxes: { [key: string]: boolean };
+  readonly dropdowns: {[key: string]: ANIMAL_PRODUCT_USAGE_VALUE | MEAL_TIME_VALUE }
+  readonly textInputs: {[key: string]: string }
 }
 
 export default FormSection;
