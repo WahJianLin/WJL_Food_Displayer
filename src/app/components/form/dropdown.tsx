@@ -1,33 +1,46 @@
-import { ANIMAL_PRODUCT_USAGE_NAME, ANIMAL_PRODUCT_USAGE_VALUE, ANIMAL_USAGE_LABEL } from '@/app/supplimentary/constants';
-import React, { Dispatch, SetStateAction } from 'react'
+import {
+  ANIMAL_PRODUCT_USAGE_VALUE,
+  FIELD_IDS,
+  MEAL_TIME_VALUE,
+} from "@/app/supplimentary/constants";
+import React from "react";
 
 function Dropdown(props: IDropdownProps) {
+
+  const getOptions = () => {
+    return Object.keys(props.options).map((key: string): JSX.Element => (
+      <option key={key} value={props.options[key]}>
+        {key}
+      </option>
+    ));
+  };
+
   return (
-  <div>
-    <label className="label cursor-pointer">
-      <span className="label-text">{ANIMAL_USAGE_LABEL}</span>
-    </label>
-    <select
-      className="select select-bordered w-full max-w-xs"
-      // add in onchange later
-    >
-      
-      <option value={ANIMAL_PRODUCT_USAGE_VALUE.STANDARD}>
-        {ANIMAL_PRODUCT_USAGE_NAME.STANDARD}
-      </option>
-      <option value={ANIMAL_PRODUCT_USAGE_VALUE.VEGETARIAN}>
-        {ANIMAL_PRODUCT_USAGE_NAME.VEGETARIAN}
-      </option>
-      <option value={ANIMAL_PRODUCT_USAGE_VALUE.VEGAN}>
-        {ANIMAL_PRODUCT_USAGE_NAME.VEGAN}
-      </option>
-    </select>
-  </div>
-  )
+    <div>
+      <label className="label cursor-pointer">
+        <span className="label-text">{props.name}</span>
+      </label>
+      <select
+        className="select select-bordered w-full max-w-xs"
+        // add in onchange later
+        onClick={(e) =>
+          props.onChange(props.id, e.currentTarget.value as ANIMAL_PRODUCT_USAGE_VALUE | MEAL_TIME_VALUE)
+        }
+      >
+        {getOptions()}
+      </select>
+    </div>
+  );
 }
 
 interface IDropdownProps {
-  onChange(value: any): void;
+  readonly name: string;
+  readonly id: FIELD_IDS;
+  readonly options: Record<string, string>;
+  onChange(
+    id: FIELD_IDS,
+    value: ANIMAL_PRODUCT_USAGE_VALUE | MEAL_TIME_VALUE
+  ): void;
 }
 
-export default  Dropdown;
+export default Dropdown;

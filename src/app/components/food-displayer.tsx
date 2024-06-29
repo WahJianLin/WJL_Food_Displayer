@@ -56,7 +56,6 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
       const recipe: IRecipe = await (
         await fetch(`/api/random?${searchParams}`)
       ).json();
-      console.log("success", recipe);
       setState({ recipe, foundRecipe: true });
     } catch (err) {
       console.log(err);
@@ -66,20 +65,15 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
       }));
     }
   };
-
-  const getRecipeSection = () => {
-    return state.recipe !== null ? (
-      <RecipeSection recipe={state.recipe} />
-    ) : null
+  const getRecipeSection = (): JSX.Element | null => {
+    return state.recipe && <RecipeSection recipe={state.recipe} />;
   };
   return (
     <div>
       <div className="drawer lg:drawer-open bg-zinc-200">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-center justify-center">
-          {state.recipe !== null ? (
-            <RecipeSection recipe={state.recipe} />
-          ) : null}
+          {getRecipeSection()}
           <label
             htmlFor="my-drawer-2"
             className="btn btn-primary drawer-button lg:hidden"
