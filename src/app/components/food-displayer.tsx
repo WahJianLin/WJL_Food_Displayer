@@ -115,16 +115,11 @@ function FoodDisplayer() {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-<<<<<<< HEAD
           <div className="menu p-4 w-80 min-h-full bg-gray-700 text-white">
             <FormSection
               fetchRecipe={fetchRecipe}
               triggerError={triggerError}
             />
-=======
-          <div className="menu p-4 w-80 min-h-full bg-gray-700 text-gray-300">
-            <FormSection fetchRecipe={fetchRecipe} />
->>>>>>> 814d604700e9200c05131347f726dc4e665a2371
           </div>
         </div>
       </div>
