@@ -58,7 +58,7 @@ function RecipeSection(props: IRecipeSectionProps) {
         {getInstructionList()}
       </div>
       <div>
-        <h6>{`${FOOTER_DESCRIPTION} ${props.recipe.creditsText}`}</h6>
+        <h6>{`${FOOTER_DESCRIPTION} and ${props.recipe.creditsText}`}</h6>
       </div>
     </div>
   );
