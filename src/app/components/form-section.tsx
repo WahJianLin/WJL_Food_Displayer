@@ -187,14 +187,7 @@ function FormSection(props: IFormSectionProps) {
             placeholder={INCLUDE_FOODS_PLACE_HOLDER}
             onChange={handleTextInputChange}
           />
-          <TextInput
-            isTextArea
-            id={FIELD_IDS.EXCLUDE_FOODS}
-            label={EXCLUDE_FOODS_LABEL}
-            description={COMMA_SEPERATED_DESCRIPTION}
-            placeholder={EXCLUDE_FOODS_PLACE_HOLDER}
-            onChange={handleTextInputChange}
-          />
+
           <button className="btn mt-4" type="submit">
             {FIND_RANDOM_RECIPE_LABEL}
           </button>
