@@ -35,8 +35,8 @@ export const EXCLUDE_FOODS_PLACE_HOLDER =
   "Ingredients/Foods to exclude in the recipe";
 
 //Error Messages
-export const ERROR_MESSAGE_TEXT_FIELDS: string =
-  "Form has errors. Check text fields.";
+export const ERROR_MESSAGE_SUBMIT: string =
+  "Spoonacular API failed to fetch based on form details or may be down.";
 export const ERROR_MESSAGE_OVERLAP: string =
   "Include and exclude cannot overlap. Please resubmit form without overlap.";
 
