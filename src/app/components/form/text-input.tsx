@@ -1,7 +1,4 @@
-import {
-  FIELD_IDS,
-  FOOD_TYPE_DESCRIPTION_LABEL,
-} from "@/app/supplimentary/constants";
+import { FIELD_IDS } from "@/app/supplimentary/constants";
 import React from "react";
 
 function TextInput(props: ITextinputProps) {
@@ -26,7 +23,9 @@ function TextInput(props: ITextinputProps) {
       <label className="w-full max-w-xs">
         <div className="label">
           <span className="label-text">{props.label}</span>
-          {props.subPlaceholder &&<span className="label-text-alt">{props.subPlaceholder}</span>}
+          {props.description && (
+            <span className="label-text-alt">{props.description}</span>
+          )}
         </div>
       </label>
       {textInput()}
@@ -39,7 +38,7 @@ interface ITextinputProps {
   readonly id: FIELD_IDS;
   readonly label: string;
   readonly placeholder: string;
-  readonly subPlaceholder?: string;
+  readonly description?: string;
   onChange(id: FIELD_IDS, value: string): void;
 }
 

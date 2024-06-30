@@ -9,7 +9,7 @@ function Checkbox(props: ICheckboxProps) {
           type="checkbox"
           checked={props.checked}
           onChange={() => props.onClick(props.id)}
-          className="text-red-600"
+          className="text-cyan-500"
         />
       </label>
     </div>

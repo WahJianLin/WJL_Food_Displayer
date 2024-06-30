@@ -6,13 +6,14 @@ import {
 import React from "react";
 
 function Dropdown(props: IDropdownProps) {
-
   const getOptions = () => {
-    return Object.keys(props.options).map((key: string): JSX.Element => (
-      <option key={key} value={props.options[key]}>
-        {key}
-      </option>
-    ));
+    return Object.keys(props.options).map(
+      (key: string): JSX.Element => (
+        <option key={key} value={props.options[key]} className="text-black">
+          {key}
+        </option>
+      )
+    );
   };
 
   return (
@@ -24,7 +25,12 @@ function Dropdown(props: IDropdownProps) {
         className="select select-bordered w-full max-w-xs"
         // add in onchange later
         onClick={(e) =>
-          props.onChange(props.id, e.currentTarget.value as ANIMAL_PRODUCT_USAGE_VALUE | MEAL_TIME_VALUE)
+          props.onChange(
+            props.id,
+            e.currentTarget.value as
+              | ANIMAL_PRODUCT_USAGE_VALUE
+              | MEAL_TIME_VALUE
+          )
         }
       >
         {getOptions()}
