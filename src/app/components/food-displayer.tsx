@@ -53,7 +53,8 @@ function FoodDisplayer() {
 
       const includeTags: string = includeTagsArray.join();
       const excludeTags: string = excludeTagsArray.join();
-      const searchParams: string = `number=1${
+      const timestamp = new Date().getTime();
+      const searchParams: string = `number=1&timestamp=${timestamp}${
         includeTags != "" ? `&include-tags=${includeTags}` : ""
       }${excludeTags != "" ? `&exclude-tags=${excludeTags}` : ""}`;
 

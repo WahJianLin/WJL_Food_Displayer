@@ -27,7 +27,7 @@ function RecipeSection(props: IRecipeSectionProps) {
         <h3 className="text-2xl pb-2">{INGREDIENTS_LABEL}</h3>
         <ul>
           {props.recipe.extendedIngredients.map((ingredient) => (
-            <li>{displayIngredient(ingredient)}</li>
+            <li key={ingredient.id}>{displayIngredient(ingredient)}</li>
           ))}
         </ul>
       </div>
@@ -40,7 +40,7 @@ function RecipeSection(props: IRecipeSectionProps) {
         <h3 className="text-2xl pb-2">{INSTRUCTIONS_LABEL}</h3>
         <ul>
           {props.recipe.analyzedInstructions[0].steps.map((step, index) => (
-            <li>{`Step ${index + 1}: ${step.step}`}</li>
+            <li key={index}>{`Step ${index + 1}: ${step.step}`}</li>
           ))}
         </ul>
       </div>
