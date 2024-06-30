@@ -10,12 +10,16 @@ import {
   MEAL_TIME_VALUE,
   GLUTEN_FREE_VALUE,
   DAIRY_FREE_VALUE,
+  ERROR_MESSAGE_TEXT_FIELDS,
 } from "../supplimentary/constants";
+import InitialHero from "./intial-hero";
+import Toast from "./basic/toast";
 
-function FoodDisplayer(props: IFoodDisplayerProps) {
+function FoodDisplayer() {
   const [state, setState] = useState<IFoodDisplayerState>({
     recipe: null,
-    foundRecipe: false,
+    displayError: false,
+    errorMsg: "",
   });
 
   const fetchRecipe = async (formDetails: IFormDetails): Promise<void> => {
@@ -49,45 +53,63 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
 
       const includeTags: string = includeTagsArray.join();
       const excludeTags: string = excludeTagsArray.join();
-      const searchParams: string = `number=1${
+      const timestamp = new Date().getTime();
+      const searchParams: string = `number=1&timestamp=${timestamp}${
         includeTags != "" ? `&include-tags=${includeTags}` : ""
       }${excludeTags != "" ? `&exclude-tags=${excludeTags}` : ""}`;
 
       const recipe: IRecipe = await (
-        await fetch(`/api/random?${searchParams}`)
+        await fetch(`/api/random?${searchParams}`, { cache: "no-store" })
       ).json();
-      console.log("success", recipe);
-      setState({ recipe, foundRecipe: true });
-    } catch (err) {
-      console.log(err);
 
-      console.log("failure", err);
       setState((prevState) => ({
         ...prevState,
-        foundRecipe: false,
+        recipe,
+        displayError: false,
+        errorMsg: "",
+      }));
+    } catch (err) {
+      console.log(err);
+      setState((prevState) => ({
+        ...prevState,
+        displayError: true,
+        errorMsg: ERROR_MESSAGE_TEXT_FIELDS,
       }));
     }
   };
 
-  const getRecipeSection = () => {
+  const getRecipeSection = (): JSX.Element | null => {
     return state.recipe !== null ? (
       <RecipeSection recipe={state.recipe} />
-    ) : null;
+    ) : (
+      <InitialHero />
+    );
   };
+
+  const errorToast = (): JSX.Element | null => {
+    return state.displayError ? <Toast message={state.errorMsg} /> : null;
+  };
+
+  const triggerError = (errorMsg: string): void => {
+    setState((prevState) => ({
+      ...prevState,
+      displayError: true,
+      errorMsg,
+    }));
+  };
+
   return (
-    <div>
-      <div className="drawer lg:drawer-open bg-blue-300">
+    <div className="h-screen">
+      <div className="drawer lg:drawer-open bg-zinc-200 h-full">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col items-center justify-center">
-          {state.recipe !== null ? (
-            <RecipeSection recipe={state.recipe} />
-          ) : null}
+        <div className="drawer-content flex flex-col items-start ml-4 ">
           <label
             htmlFor="my-drawer-2"
-            className="btn btn-primary drawer-button lg:hidden"
+            className="btn btn-primary drawer-button lg:hidden mt-4"
           >
             {OPEN_FORM_LABEL}
           </label>
+          {getRecipeSection()}
         </div>
         <div className="drawer-side">
           <label
@@ -95,19 +117,23 @@ function FoodDisplayer(props: IFoodDisplayerProps) {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="menu p-4 w-80 min-h-full bg-gray-700 text-gray-300">
-            <FormSection fetchRecipe={fetchRecipe} />
+          <div className="menu p-4 w-80 min-h-full bg-gray-700 text-white">
+            <FormSection
+              fetchRecipe={fetchRecipe}
+              triggerError={triggerError}
+            />
           </div>
         </div>
       </div>
+      {errorToast()}
     </div>
   );
 }
 
-interface IFoodDisplayerProps {}
 interface IFoodDisplayerState {
   readonly recipe: IRecipe | null;
-  readonly foundRecipe: boolean;
+  readonly displayError: boolean;
+  readonly errorMsg: string;
 }
 
 export default FoodDisplayer;

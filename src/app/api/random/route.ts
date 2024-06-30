@@ -16,6 +16,7 @@ export async function GET(req: Request) {
               "Content-Type": "application/json",
               method: "GET",
               "x-api-key": apiKey,
+              cache: "no-store",
             },
           }
         )
