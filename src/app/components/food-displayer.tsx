@@ -10,7 +10,7 @@ import {
   MEAL_TIME_VALUE,
   GLUTEN_FREE_VALUE,
   DAIRY_FREE_VALUE,
-  ERROR_MESSAGE_TEXT_FIELDS,
+  ERROR_MESSAGE_SUBMIT,
 } from "../supplimentary/constants";
 import InitialHero from "./intial-hero";
 import Toast from "./basic/toast";
@@ -57,7 +57,6 @@ function FoodDisplayer() {
       const searchParams: string = `number=1&timestamp=${timestamp}${
         includeTags != "" ? `&include-tags=${includeTags}` : ""
       }${excludeTags != "" ? `&exclude-tags=${excludeTags}` : ""}`;
-
       const recipe: IRecipe = await (
         await fetch(`/api/random?${searchParams}`, { cache: "no-store" })
       ).json();
@@ -73,7 +72,7 @@ function FoodDisplayer() {
       setState((prevState) => ({
         ...prevState,
         displayError: true,
-        errorMsg: ERROR_MESSAGE_TEXT_FIELDS,
+        errorMsg: ERROR_MESSAGE_SUBMIT,
       }));
     }
   };
@@ -87,7 +86,9 @@ function FoodDisplayer() {
   };
 
   const errorToast = (): JSX.Element | null => {
-    return state.displayError ? <Toast message={state.errorMsg} /> : null;
+    return state.displayError ? (
+      <Toast message={state.errorMsg} hideError={hideError} />
+    ) : null;
   };
 
   const triggerError = (errorMsg: string): void => {
@@ -98,11 +99,18 @@ function FoodDisplayer() {
     }));
   };
 
+  const hideError = (): void => {
+    setState((prevState) => ({
+      ...prevState,
+      displayError: false,
+    }));
+  };
+
   return (
     <div className="h-screen">
       <div className="drawer lg:drawer-open bg-zinc-200 h-full">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col items-start ml-4 ">
+        <div className="drawer-content flex flex-col items-start ml-4 overflow-scroll">
           <label
             htmlFor="my-drawer-2"
             className="btn btn-primary drawer-button lg:hidden mt-4"
