@@ -61,6 +61,7 @@ function FoodDisplayer() {
       const recipe: IRecipe = await (
         await fetch(`/api/random?${searchParams}`, { cache: "no-store" })
       ).json();
+
       setState((prevState) => ({
         ...prevState,
         recipe,
@@ -78,7 +79,7 @@ function FoodDisplayer() {
   };
 
   const getRecipeSection = (): JSX.Element | null => {
-    return state.recipe ? (
+    return state.recipe !== null ? (
       <RecipeSection recipe={state.recipe} />
     ) : (
       <InitialHero />
